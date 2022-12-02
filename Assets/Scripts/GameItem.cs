@@ -6,10 +6,13 @@ namespace HOG
 {
     public class GameItem : MonoBehaviour
     {
+        [SerializeField] private string id;
         [SerializeField] private float scaleFactor = 1.5f;
         [SerializeField] private float scaleDuration = 0.5f;
         private SpriteRenderer _spriteRenderer;
 
+        public Action<string> OnFind;
+        
         private void Awake()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -25,13 +28,14 @@ namespace HOG
             var startScale = transform.localScale;
             transform.DOScale(startScale * scaleFactor, scaleDuration).OnComplete(
                 () => _spriteRenderer.DOFade(endValue:0, scaleDuration).OnComplete(
-                    () => gameObject.SetActive(false)));
+                    TurnOff));
             
         }
 
-        private void TurOff()
+        private void TurnOff()
         {
             gameObject.SetActive(false);
+            OnFind?.Invoke(id);
         }
     }
     
