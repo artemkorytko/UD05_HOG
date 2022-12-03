@@ -13,7 +13,7 @@ namespace HOG
         private SpriteRenderer _spriteRenderer;
 
         public event Action<string> OnFind; // event - вызов события может произойти только в этом же классе с наружи не может!! 
-        
+        // если нет event, то можем передавать данные в других классах..
         public void Initialise()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();

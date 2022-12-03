@@ -8,11 +8,14 @@ namespace HOG
         private const string SAVE_KEY = "level_index";
         
         [SerializeField] private Level[] _allLevels;
+        [SerializeField] private UIController _uiController = null;
 
         private Level _currentLevel;
         private int _currentLevelIndex;
-
+        
         public int LevelIndex => _currentLevelIndex + 1;
+        public event Action Win;
+        
 
         private void Start()
         {
@@ -20,7 +23,7 @@ namespace HOG
             CreateLevel();
             LoadData();
             StartGame();
-            Debug.Log("Start" + _currentLevelIndex);
+            //Debug.Log("Start" + _currentLevelIndex);
         }
 
         private void SaveData()
@@ -72,6 +75,7 @@ namespace HOG
         {
             CreateLevel();
             StartGame();
+            Win?.Invoke();
         }
 
     }
