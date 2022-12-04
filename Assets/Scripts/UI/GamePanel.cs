@@ -9,12 +9,26 @@ namespace HOG
         [SerializeField] private TextMeshProUGUI _numberText;
 
         private GameManager _gameManager;
-        
-        private void OnEnable()
+
+        private void Awake()
         {
             _gameManager = FindObjectOfType<GameManager>();
-            _numberText.text = "Level " + _gameManager.LevelIndex;
+            _numberText.text = "Level: " + _gameManager.LevelIndex;
         }
 
+        private void OnEnable()
+        {
+            _gameManager.NextLevelIndex += OnNextLevelIndex;
+        }
+
+        private void OnDisable()
+        {
+            _gameManager.NextLevelIndex -= OnNextLevelIndex;
+        }
+
+        private void OnNextLevelIndex(int obj)
+        {
+            _numberText.text ="Level: " +  obj;
+        }
     }
 }

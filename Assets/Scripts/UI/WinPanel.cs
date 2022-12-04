@@ -36,6 +36,7 @@ namespace HOG
         private void OnDisable()
         {
             _nextLevelButton.onClick.RemoveListener(OnNextLevel);
+            _sequence.Kill();
         }
 
         private void OnNextLevel()

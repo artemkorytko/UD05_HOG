@@ -36,6 +36,7 @@ namespace HOG
        private void OnDisable()
        {
            _playButton.onClick.RemoveListener(OnPlay);
+           _sequence.Kill();
        }
 
        private void OnPlay()
