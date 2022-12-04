@@ -19,14 +19,15 @@ namespace HOG
 
             for (int i = 0; i < _gameItems.Length; i++)
             {
+                _gameItems[i].Initialize();
                 _gameItems[i].OnFind += OnFindItem;
-                _itemsCount = _gameItems.Length;
+
             }
         }
         
         private void OnFindItem(string id)
         {
-            if (_itemsCount > 0)
+            if (--_itemsCount > 0)
             {
                 OnItemFind?.Invoke(id);
             }
