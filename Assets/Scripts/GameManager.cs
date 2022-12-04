@@ -14,7 +14,10 @@ namespace HOG
         public int LevelIndex => _currentLevelIndex + 1;
 
         private UIcontroller _uiController = new UIcontroller();
-        
+
+        public event Action _allLevelsDone;
+        public event Action<int> _LevelIndexAfterWining; //передадим число(номер текущего уровня который мы прошли) в качестве события
+       
 
         private void Start()
         {
@@ -80,10 +83,15 @@ namespace HOG
 
            public void StartNextGame()
            {
+               _LevelIndexAfterWining?.Invoke(LevelIndex); //вызывается событие передающее номер текущего уровня
                Debug.Log("Next Level");
                CreateLevel();
                StartGame();
+               _allLevelsDone?.Invoke();//при стартеСледУровня вызывается событие о том что все уровни пройдены и как слдествие вызывать WinPanel
+               
            }
+           
+           
 
         
     }

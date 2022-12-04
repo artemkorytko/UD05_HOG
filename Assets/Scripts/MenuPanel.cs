@@ -11,6 +11,8 @@ public class MenuPanel : MonoBehaviour
     [SerializeField] private Button _playButton;
     [SerializeField] private CanvasGroup _Canvas;
 
+    public event Action _play;//Action - как рация, подписываемся на обновления какого-либо события 
+
     private Sequence _sequence; // секвенция будет отвечать за последователньность работы анимации
     //public void StartGame() //StartGame будет висеть на конпке начала игры, то есть тут надо прописать логику кликанья на кнопку и перемещения на Левел
 
@@ -37,7 +39,7 @@ public class MenuPanel : MonoBehaviour
 
     }
 
-    public void Play() //повесим эту функцию на кнопку, и при клике на кнопку отрботает этот метод
+    public void Play() //повесим эту функцию на кнопку, и при клике на кнопку отрботает этот метод 
     {
         _Canvas.DOFade(0, 1); /*на канвасе висит метод doFade(doFade - метод класса doTween), 
         Fade - скрывает объект КанвасГруп(к которому мы обратились через _Канвас) до конечного значения 0(т е исчезнет) за 1 секунду
@@ -45,7 +47,12 @@ public class MenuPanel : MonoBehaviour
         
         _sequence.Kill();//то есть при запуске метода play, _sequence перестанет работат(=> перестает работать анимации кнопки, при начале работы уровня), то есть убиваем все что связанол с секвенцией
 
+        _play?.Invoke();//оповещение о действии (нажатии кнопки _play - переменная метода Action)((т к весь метод Play(прописываемый здесь) отработает при нажатии на кнопку =>_play?.Invoke() - оповещение о нажатии на кнопку)
     }
+    
+    
+    
+    
     
     
 }
