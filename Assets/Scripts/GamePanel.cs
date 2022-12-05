@@ -23,7 +23,7 @@ namespace HOG
 
         private void UpdateLevelText(int levelIndex)
         {
-            _levelText.text = levelIndex.ToString();
+            _levelText.text = $"Level: {levelIndex}";
         }
     }
 }
