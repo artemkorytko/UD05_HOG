@@ -13,6 +13,8 @@ namespace HOG
         private int _currentLevelIndex;
         private UiController _uiController;
 
+        private GamePanel _gamePanel;
+
         private int LevelIndex
         {
             get => _currentLevelIndex;
@@ -29,6 +31,7 @@ namespace HOG
         private void Awake()
         {
             _uiController = FindObjectOfType<UiController>();
+            _gamePanel = _uiController.GetComponentInChildren<GamePanel>();
         }
 
         private void Start()
@@ -68,6 +71,7 @@ namespace HOG
         {
             _currentLevel = InstantiateLevel(_currentLevelIndex);
             _currentLevel.Initialize();
+            _gamePanel.GenerateList(_currentLevel.GetItemDictionary());
         }
 
         private Level InstantiateLevel(int index)
@@ -89,14 +93,21 @@ namespace HOG
         private void StartGame()
         {
             _currentLevel.OnCompleted += StopGame;
+            _currentLevel.OnItemFind += OnItemFind;
         }
 
         private void StopGame()
         {
             _currentLevel.OnCompleted -= StopGame;
+            _currentLevel.OnItemFind -= OnItemFind;
             LevelIndex++;
             SaveData();
             OnWin?.Invoke();
+        }
+
+        private void OnItemFind(string id)
+        {
+            _gamePanel.OnItemFind(id);
         }
 
         public void StartNextGame()

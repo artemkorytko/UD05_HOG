@@ -12,6 +12,9 @@ namespace HOG
         private SpriteRenderer _spriteRenderer;
         public event Action<string> OnFind;
 
+        public string ID => id;
+        public Sprite Sprite => _spriteRenderer.sprite;
+
         public void Initialize()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
