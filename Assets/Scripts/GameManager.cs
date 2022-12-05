@@ -78,7 +78,7 @@ namespace HOG
             StartGame();
             NextLevelIndex?.Invoke(LevelIndex);
             Win?.Invoke();
-            _uiController.CreateLevel -= CreateLevel;
+            //_uiController.CreateLevel -= CreateLevel;
         }
 
     }
