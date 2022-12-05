@@ -24,7 +24,6 @@ namespace HOG
             CreateLevel();
             LoadData();
             StartGame();
-            _uiController.CreateLevel += CreateLevel;
         }
 
         private void SaveData()
@@ -62,6 +61,7 @@ namespace HOG
         public void StartGame()
         {
             _currentLevel.OnComplited += StopGame;
+            _uiController.CreateLevel += CreateLevel;
         }
 
         public void StopGame()
@@ -78,6 +78,7 @@ namespace HOG
             StartGame();
             NextLevelIndex?.Invoke(LevelIndex);
             Win?.Invoke();
+            _uiController.CreateLevel -= CreateLevel;
         }
 
     }
