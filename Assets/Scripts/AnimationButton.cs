@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace HOG
 {
+    //весит на каждой кнопке в UI
     public class AnimationButton : MonoBehaviour
     {
         private Sequence _sequence;

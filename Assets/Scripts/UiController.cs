@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace HOG
 {
+    //Весит на Canvas
     public class UiController : MonoBehaviour
     {
         private enum PanelType
