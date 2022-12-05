@@ -11,15 +11,47 @@ namespace HOG
 
         private Level _currentLevel;
         private int _currentLevelIndex;
+        private UiController _uiController;
 
-        public int LevelIndex => _currentLevelIndex + 1;
+        private int LevelIndex
+        {
+            get => _currentLevelIndex;
+            set
+            {
+                _currentLevelIndex = value;
+                OnLevelChanged?.Invoke(LevelIndex + 1);
+            }
+        }
+
+        public event Action<int> OnLevelChanged;
+        public event Action OnWin;
+
+        private void Awake()
+        {
+            _uiController = FindObjectOfType<UiController>();
+        }
 
         private void Start()
         {
             LoadData();
-            CreateLevel();
-            StartGame();
-            // InitializeUI();
+            SubscribeUI();
+        }
+
+        private void SubscribeUI()
+        {
+            _uiController.OnMenuButtonEvent += StartNextGame;
+            _uiController.OnNextLevelButtonEvent += StartNextGame;
+        }
+
+        private void OnDestroy()
+        {
+            UnSubscribeUI();
+        }
+
+        private void UnSubscribeUI()
+        {
+            _uiController.OnMenuButtonEvent -= StartNextGame;
+            _uiController.OnNextLevelButtonEvent -= StartNextGame;
         }
 
         private void SaveData()
@@ -29,7 +61,7 @@ namespace HOG
 
         private void LoadData()
         {
-            _currentLevelIndex = PlayerPrefs.GetInt(SAVE_KEY, 0);
+            LevelIndex = PlayerPrefs.GetInt(SAVE_KEY, 0);
         }
 
         private void CreateLevel()
@@ -54,7 +86,7 @@ namespace HOG
             return level;
         }
 
-        public void StartGame()
+        private void StartGame()
         {
             _currentLevel.OnCompleted += StopGame;
         }
@@ -62,14 +94,13 @@ namespace HOG
         private void StopGame()
         {
             _currentLevel.OnCompleted -= StopGame;
-            _currentLevelIndex++;
+            LevelIndex++;
             SaveData();
-            StartNextGame();
+            OnWin?.Invoke();
         }
 
         public void StartNextGame()
         {
-            Debug.Log("Start next level");
             CreateLevel();
             StartGame();
         }
