@@ -1,5 +1,5 @@
 ﻿using System;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HOG
@@ -33,9 +33,41 @@ namespace HOG
             }
             else
             {
+                OnItemFind?.Invoke(id);
                 OnCompleted?.Invoke();
             }
         }
-        
+
+        public Dictionary<string, GameItemData> GetItemDictionary()
+        {
+            Dictionary<string, GameItemData> itemsData = new Dictionary<string, GameItemData>();
+            //
+            //for (int i = 0; i < _gameItems.Length; i++)
+            //{
+            //    GameItem item = _gameItems[i];
+            //    string id = item.ID;
+            //    
+            //    if (itemsData.ContainsKey(id))
+            //    {
+            //        itemsData[id].IncreaseAmount();
+            //    }
+            //    else
+            //    {
+            //        itemsData.Add(id,new GameItemData(item.Sprite));
+            //    }
+            //}
+
+            foreach (GameItem item in _gameItems)
+            {
+                string id = item.ID;
+                if (itemsData.ContainsKey(id))
+                {
+                   itemsData[id].IncreaseAmount(); 
+                }
+            }
+
+            return itemsData;
+        }
+
     }
 }

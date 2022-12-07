@@ -11,7 +11,10 @@ namespace HOG
         [SerializeField] private float scaleDuration = 0.5f;
         private SpriteRenderer _spriteRenderer;
         public Action<string> OnFind;
-        
+
+        public string ID => id;
+        public Sprite Sprite => _spriteRenderer.sprite;
+
         public void Initialize()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
