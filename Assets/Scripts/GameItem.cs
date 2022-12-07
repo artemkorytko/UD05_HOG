@@ -11,9 +11,9 @@ namespace HOG
         [SerializeField] private float _scaleDuration = 0.5f;
         [SerializeField] private float _scaleFactor = 1.5f;
         private SpriteRenderer _spriteRenderer;
-
-        public event Action<string> OnFind; // event - вызов события может произойти только в этом же классе с наружи не может!! 
-        // если нет event, то можем передавать данные в других классах..
+        public string ID => _id;
+        public Sprite Sprite => _spriteRenderer.sprite;
+        public event Action<string> OnFind; 
         public void Initialise()
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();

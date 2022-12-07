@@ -9,6 +9,7 @@ namespace HOG
         [SerializeField] private MenuPanel _menuPanel;
         [SerializeField] private WinPanel _winPanel;
         [SerializeField] private GameManager _gameManager;
+        
         public event Action CreateLevel;
 
         private void Awake()
@@ -22,19 +23,19 @@ namespace HOG
         {
             _menuPanel.Play += OnGameStart;
             _winPanel.NextLevl += OnNextLevel;
-            _gameManager.Win += OnWin;
+            _gameManager.OnWin += OnWin;
         }
 
         private void OnDisable()
         {
             _menuPanel.Play -= OnGameStart;
             _winPanel.NextLevl -= OnNextLevel;
-            _gameManager.Win -= OnWin;
+            _gameManager.OnWin -= OnWin;
         }
-        
         
         private void OnWin()
         {
+            Debug.Log("UI controller запуск панели победы");
             _gamePanel.gameObject.SetActive(false);
             _winPanel.gameObject.SetActive(true);
         }
@@ -50,6 +51,7 @@ namespace HOG
         {
             _gamePanel.gameObject.SetActive(true);
             _menuPanel.gameObject.SetActive(false);
+            CreateLevel?.Invoke();
         }
 
     }
