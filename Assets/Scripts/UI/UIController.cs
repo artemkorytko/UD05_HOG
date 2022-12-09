@@ -1,22 +1,40 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HOG
 {
     public class UIController : MonoBehaviour
     {
-        [SerializeField] private GamePanel _gamePanel;
-        [SerializeField] private MenuPanel _menuPanel;
-        [SerializeField] private WinPanel _winPanel;
-        [SerializeField] private GameManager _gameManager;
+        private enum PanelType
+        { 
+            Menu,
+            Game,
+            Win
+        }
+        
+        private GamePanel _gamePanel;
+        private MenuPanel _menuPanel;
+        private WinPanel _winPanel;
+        private AudioManager _audioManager;
+        
+        private GameManager _gameManager;
         
         public event Action CreateLevel;
 
-        private void Awake()
+        private void Awake() 
         {
-            _menuPanel.gameObject.SetActive(true);
-            _gamePanel.gameObject.SetActive(false);
-            _winPanel.gameObject.SetActive(false);
+            _gamePanel = GetComponentInChildren<GamePanel>(true);
+            _menuPanel = GetComponentInChildren<MenuPanel>(true);
+            _winPanel = GetComponentInChildren<WinPanel>(true);
+
+            _audioManager = FindObjectOfType<AudioManager>();
+            _gameManager = FindObjectOfType<GameManager>();
+        }
+
+        private void Start()
+        {
+           SwitchPanel(PanelType.Menu);
         }
 
         private void OnEnable()
@@ -25,7 +43,7 @@ namespace HOG
             _winPanel.NextLevl += OnNextLevel;
             _gameManager.OnWin += OnWin;
         }
-
+        
         private void OnDisable()
         {
             _menuPanel.Play -= OnGameStart;
@@ -35,23 +53,27 @@ namespace HOG
         
         private void OnWin()
         {
-            Debug.Log("UI controller запуск панели победы");
-            _gamePanel.gameObject.SetActive(false);
-            _winPanel.gameObject.SetActive(true);
+            SwitchPanel(PanelType.Win);
+            _audioManager.PlayAudioWin();
         }
 
         private void OnNextLevel()
         {
-            _gamePanel.gameObject.SetActive(true);
-            _winPanel.gameObject.SetActive(false);
             CreateLevel?.Invoke();
+            SwitchPanel(PanelType.Game);
         }
 
         private void OnGameStart()
         {
-            _gamePanel.gameObject.SetActive(true);
-            _menuPanel.gameObject.SetActive(false);
             CreateLevel?.Invoke();
+            SwitchPanel(PanelType.Game);
+        }
+        
+        private void SwitchPanel(PanelType panelType)
+        {
+            _gamePanel.gameObject.SetActive(panelType == PanelType.Game);
+            _menuPanel.gameObject.SetActive(panelType == PanelType.Menu);
+            _winPanel.gameObject.SetActive(panelType == PanelType.Win);
         }
 
     }

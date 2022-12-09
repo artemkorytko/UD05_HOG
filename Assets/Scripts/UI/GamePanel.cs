@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+
 
 namespace HOG
 {
@@ -10,20 +13,19 @@ namespace HOG
         [SerializeField] private Transform _content;
         [SerializeField] private UiItem _prefab;
         [SerializeField] private TextMeshProUGUI _numberText;
-
-        
+   
         private Dictionary<string, UiItem> _uiItems = new Dictionary<string, UiItem>();
         private GameManager _gameManager;
-
+       
         private void Awake()
         {
             _gameManager = FindObjectOfType<GameManager>();
-            _numberText.text = "Level: " + _gameManager.LevelIndex;
         }
 
         private void Start()
         {
             _gameManager.OnNextLevelIndex += OnNextLevelIndex;
+            _numberText.text = $"Level: {_gameManager.LevelIndex}";
         }
 
         private void OnDestroy()
@@ -31,9 +33,9 @@ namespace HOG
             _gameManager.OnNextLevelIndex -= OnNextLevelIndex;
         }
 
-        private void OnNextLevelIndex(int obj) 
+        private void OnNextLevelIndex(int index) 
         {
-            _numberText.text ="Level: " +  obj;
+            _numberText.text = $"Level: {index}";
         }
 
         public void GenerateList(Dictionary<string, GameItemData> dictionary)
@@ -55,5 +57,6 @@ namespace HOG
                 _uiItems[id].Decrease();
             }
         }
+
     }
 }

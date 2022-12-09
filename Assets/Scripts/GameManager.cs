@@ -9,16 +9,27 @@ namespace HOG
         
         [SerializeField] private Level[] _allLevels;
         [SerializeField] private UIController _uiController;
-
+        
+        private GamePanel _gamePanel;
         private Level _currentLevel;
         private int _currentLevelIndex;
-        private GamePanel _gamePanel;
-        public int LevelIndex => _currentLevelIndex + 1;
+        
+        //public int LevelIndex => _currentLevelIndex + 1;
+
+        public int LevelIndex
+        {
+            get => _currentLevelIndex;
+            set
+            {
+                _currentLevelIndex = value;
+                OnNextLevelIndex?.Invoke(LevelIndex);
+            }
+        }
         public event Action OnWin;
         public event Action<int> OnNextLevelIndex;
 
         private void Awake()
-        { 
+        {
             _gamePanel = _uiController.GetComponentInChildren<GamePanel>(true);
         }
 
@@ -82,17 +93,15 @@ namespace HOG
         {
             _currentLevel.OnComplited -= StopGame;
             _currentLevel.OnItemFind -= OnItemFind;
-            _currentLevelIndex++;
+            LevelIndex++;
             
             SaveData();
             
-            OnNextLevelIndex?.Invoke(LevelIndex);
             OnWin?.Invoke();
-            Debug.Log("Победа");
         }
 
         public void StartNextGame()
-        { 
+        {
             CreateLevel();
             StartGame();
         }

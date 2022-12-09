@@ -28,6 +28,5 @@ namespace HOG
             _sequence.Append(transform.DOScale(Vector3.one, _durationAnimationButton));
             _sequence.SetLoops(-1);
         }
-        
     }
 }
