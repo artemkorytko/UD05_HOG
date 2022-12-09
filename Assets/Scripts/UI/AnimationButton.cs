@@ -19,7 +19,7 @@ namespace HOG
 
         private void OnDisable()
         {
-            _sequence?.Kill(true); 
+            _sequence?.Kill(true);
         }
 
         private void StartAnimation()

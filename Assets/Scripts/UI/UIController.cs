@@ -8,6 +8,7 @@ namespace HOG
     {
         private enum PanelType
         { 
+            None,
             Menu,
             Game,
             Win
@@ -24,9 +25,9 @@ namespace HOG
 
         private void Awake() 
         {
-            _gamePanel = GetComponentInChildren<GamePanel>(true);
-            _menuPanel = GetComponentInChildren<MenuPanel>(true);
-            _winPanel = GetComponentInChildren<WinPanel>(true);
+            _gamePanel = GetComponentInChildren<GamePanel>();
+            _menuPanel = GetComponentInChildren<MenuPanel>();
+            _winPanel = GetComponentInChildren<WinPanel>();
 
             _audioManager = FindObjectOfType<AudioManager>();
             _gameManager = FindObjectOfType<GameManager>();
@@ -34,7 +35,7 @@ namespace HOG
 
         private void Start()
         {
-           SwitchPanel(PanelType.Menu);
+            SwitchPanel(PanelType.Menu);
         }
 
         private void OnEnable()
@@ -66,14 +67,30 @@ namespace HOG
         private void OnGameStart()
         {
             CreateLevel?.Invoke();
-            SwitchPanel(PanelType.Game);
+            SwitchPanel(PanelType.None);
         }
         
         private void SwitchPanel(PanelType panelType)
         {
-            _gamePanel.gameObject.SetActive(panelType == PanelType.Game);
-            _menuPanel.gameObject.SetActive(panelType == PanelType.Menu);
-            _winPanel.gameObject.SetActive(panelType == PanelType.Win);
+            switch (panelType)
+            {
+                case(PanelType.Game):
+                    _winPanel.SetAlphaCanvas(false);
+                  break;
+                
+                case(PanelType.Win):
+                    _winPanel.SetAlphaCanvas(true);
+                    break;
+                
+                case(PanelType.Menu):
+                    _menuPanel.SetAlphaCanvas(true);
+                    break;
+                
+                default:
+                    _menuPanel.SetAlphaCanvas(false);
+                    _winPanel.SetAlphaCanvas(false);
+                    break;
+            }
         }
 
     }

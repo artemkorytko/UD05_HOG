@@ -2,7 +2,6 @@
 using DG.Tweening;
 using UnityEngine;
 
-
 namespace HOG
 {
     public class MenuPanel : BaseUiPanelWithButton
@@ -12,9 +11,8 @@ namespace HOG
         protected override void OnButtonClick()
         {
             Play?.Invoke();
-            Debug.Log("start game");
         }
-
+        
     }
     
 }

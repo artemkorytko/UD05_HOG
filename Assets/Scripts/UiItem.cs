@@ -24,9 +24,8 @@ namespace HOG
 
         public void Decrease()
         {
-            _count--;
             
-            if (_count == 0)
+            if (--_count == 0)
             {
                 Destroy(gameObject);
             }

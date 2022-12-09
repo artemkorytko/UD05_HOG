@@ -12,6 +12,6 @@ namespace HOG
         {
             NextLevl?.Invoke();
         }
-
+        
     }
 }

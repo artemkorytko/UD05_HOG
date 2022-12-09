@@ -16,7 +16,7 @@ namespace HOG
    
         private Dictionary<string, UiItem> _uiItems = new Dictionary<string, UiItem>();
         private GameManager _gameManager;
-       
+
         private void Awake()
         {
             _gameManager = FindObjectOfType<GameManager>();
@@ -57,6 +57,6 @@ namespace HOG
                 _uiItems[id].Decrease();
             }
         }
-
+        
     }
 }
