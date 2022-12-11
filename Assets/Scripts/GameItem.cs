@@ -6,14 +6,18 @@ namespace HOG
 {
     public class GameItem : MonoBehaviour
     {
+        
         [SerializeField] private string id;
         [SerializeField] private float scaleFactor = 1.5f;
         [SerializeField] private float scaleDuration = 0.5f;
         
         private SpriteRenderer _spriteRenderer;//SpriteRenderer - компонент(т е тип переменной), sprite renderer в юнити позволяет отображать изображения в виде спрайтов(спрайт - геометрическая фигура на которую нанесена картинка(т е текстура), т е спрайт - объект в игре)
+        
 
-       
         public event Action<string> OnFind;
+        public Sprite Sprite => _spriteRenderer.sprite;
+
+        public string ID => id;
 
         public void Initialize() 
         {
@@ -36,7 +40,7 @@ namespace HOG
         private void TurnOff()
         {
             gameObject.SetActive(false);
-            OnFind?.Invoke(id);
+            OnFind?.Invoke(ID);
 
             
         }

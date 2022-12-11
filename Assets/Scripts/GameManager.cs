@@ -9,31 +9,45 @@ namespace HOG
         [SerializeField] private Level[] allLevels;
 
         private Level _currentLevel; //ссылка на созданный текущий уровень
-        private int _currentLevelIndex;
+        public int _currentLevelIndex;
 
-        public int LevelIndex => _currentLevelIndex + 1;
+       private GamePanel _gamePanel;
 
-        private UIcontroller _uiController = new UIcontroller();
+       [SerializeField] private UIcontroller _uiController;
 
         public event Action _allLevelsDone;
         public event Action<int> _LevelIndexAfterWining; //передадим число(номер текущего уровня который мы прошли) в качестве события
-       
+
+        public int LevelIndex
+        {
+            get => _currentLevelIndex;
+            set
+            {
+                _currentLevelIndex = value;
+                _LevelIndexAfterWining?.Invoke( LevelIndex); //подписка
+            }
+        }
+
+        private void Awake()
+        {
+            Debug.Log(LevelIndex);
+            _uiController = FindObjectOfType<UIcontroller>();
+            _gamePanel = _uiController.GetComponentInChildren<GamePanel>(true);
+        }
 
         private void Start()
         {
             LoadData();
-            CreateLevel();
-            StartGame();
+            _uiController.CreateLevel += StartNextGame; //подписываемся от события CreateLevel
+            // CreateLevel();
+            //StartGame();
         }
 
-     /*   private void Update()
+        public void OnDestroy()
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                CreateLevel();
-            }
-            
-        } */
+            _uiController.CreateLevel -= StartNextGame; //отписываемся от события CreateLevel
+        }
+
 
         private void SaveData()
         {
@@ -49,6 +63,7 @@ namespace HOG
         {
             _currentLevel = InstantiateLevel(_currentLevelIndex);
             _currentLevel.Initialize(); // вызов метода initialize
+            _gamePanel.GenerateList(_currentLevel.GetItemDictionary());
         }
 
         private Level InstantiateLevel(int index) //index - номер уровня который сейчас создать
@@ -71,25 +86,41 @@ namespace HOG
         public void StartGame()
            {
                _currentLevel.OnCompleted += StopGame;
+               _currentLevel.OnItemFind += OnItemFind;
+               
            }
 
-           public void StopGame()
+        private void OnItemFind(string obj)
+        {
+          _gamePanel.OnItemFind(obj);
+        }
+
+        public void StopGame()
            {
+               _allLevelsDone?.Invoke(); //соыбтие о том что уровень пройдем и которое будет вызывать панель победы
+               Debug.Log("Stop game");
                _currentLevel.OnCompleted -= StopGame;
-               _currentLevelIndex++;
+               _currentLevel.OnItemFind -= OnItemFind;
+               LevelIndex++;
                SaveData();
-               StartNextGame();
+               
+               //Debug.Log(_currentLevelIndex);
+               
+              // _LevelIndexAfterWining?.Invoke(LevelIndex);//при стартеСледУровня вызывается событие о том что  уровень пройден и как слдествие вызывать WinPanel
+              // _LevelIndexAfterWining?.Invoke(_currentLevelIndex); //вызывается событие передающее номер текущего уровня
+               //StartNextGame();
            }
 
            public void StartNextGame()
            {
-               _LevelIndexAfterWining?.Invoke(LevelIndex); //вызывается событие передающее номер текущего уровня
-               Debug.Log("Next Level");
+              
+               Debug.Log(_currentLevelIndex);
                CreateLevel();
                StartGame();
-               _allLevelsDone?.Invoke();//при стартеСледУровня вызывается событие о том что все уровни пройдены и как слдествие вызывать WinPanel
-               
+             
            }
+           
+           
            
            
 

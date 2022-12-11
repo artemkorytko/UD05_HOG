@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HOG
@@ -20,12 +21,14 @@ namespace HOG
             {
                 _gameItems[i].Initialize();
                 _gameItems[i].OnFind += OnFindItem;
-                
+
             }
 
-          
+
         }
-        
+
+
+
         private void OnFindItem(string id)
         {
             _itemsCount--; //сначала вычитаем
@@ -35,11 +38,36 @@ namespace HOG
             }
             else
             {
+                OnItemFind?.Invoke(id);
                 OnCompleted?.Invoke();
             }
         }
-        
-        
-        
+
+        public Dictionary<string, GameItemData> GetItemDictionary()
+        {
+            Dictionary<string, GameItemData> itemsData = new Dictionary<string, GameItemData>();
+
+            for (int i = 0; i < _gameItems.Length; i++)
+            {
+                GameItem item = _gameItems[i];
+                string id = item.ID;
+                
+                if (itemsData.ContainsKey(_gameItems[i].ID))
+                {
+                    itemsData[_gameItems[i].ID].IncreaseAmount();
+                }
+                else
+                {
+                    itemsData.Add(id, new GameItemData(item.Sprite));
+                }
+            }
+          
+
+            return itemsData;
+        }
+
+
+
+
     }
 }

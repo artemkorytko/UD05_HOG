@@ -139,6 +139,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2319928663335503573}
     m_Modifications:
+    - target: {fileID: 365634192310928680, guid: 069961f22f7594b43add008b6307c227, type: 3}
+      propertyPath: id
+      value: yozh
+      objectReference: {fileID: 0}
     - target: {fileID: 4645040151823133457, guid: 069961f22f7594b43add008b6307c227, type: 3}
       propertyPath: m_Name
       value: GameItem (2)
@@ -201,6 +205,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2319928663335503573}
     m_Modifications:
+    - target: {fileID: 365634192310928680, guid: 069961f22f7594b43add008b6307c227, type: 3}
+      propertyPath: id
+      value: yozh
+      objectReference: {fileID: 0}
     - target: {fileID: 4645040151823133457, guid: 069961f22f7594b43add008b6307c227, type: 3}
       propertyPath: m_Name
       value: GameItem (1)
@@ -263,6 +271,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2319928663335503573}
     m_Modifications:
+    - target: {fileID: 365634192310928680, guid: 069961f22f7594b43add008b6307c227, type: 3}
+      propertyPath: id
+      value: yozh
+      objectReference: {fileID: 0}
     - target: {fileID: 4645040151823133457, guid: 069961f22f7594b43add008b6307c227, type: 3}
       propertyPath: m_Name
       value: GameItem
