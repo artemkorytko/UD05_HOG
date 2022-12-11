@@ -25,34 +25,41 @@ namespace HOG
                 OnNextLevelIndex?.Invoke(LevelIndex);
             }
         }
+        
         public event Action OnWin;
         public event Action<int> OnNextLevelIndex;
 
+        
         private void Awake()
         {
             _gamePanel = _uiController.GetComponentInChildren<GamePanel>(true);
         }
 
+        
         private void Start()
         {
             LoadData();
             _uiController.CreateLevel += StartNextGame;
         }
 
+        
         private void OnDestroy()
         {
             _uiController.CreateLevel -= StartNextGame;
         }
 
+        
         private void SaveData()  // система сохранения (установить)
         {
             PlayerPrefs.SetInt(SAVE_KEY, _currentLevelIndex); 
         }
 
+        
         private void LoadData() // система сохранения (записать)
         {
             _currentLevelIndex = PlayerPrefs.GetInt(SAVE_KEY, 0);
         }
+        
         
         private void CreateLevel()
         {
@@ -62,6 +69,7 @@ namespace HOG
             _gamePanel.GenerateList(_currentLevel.GetItemDictionary());
         }
 
+        
         private Level InstantiateLevel(int index)
         {
             if (_currentLevel != null)
@@ -78,17 +86,20 @@ namespace HOG
             return level;
         }
 
+        
         public void StartGame()
         {
             _currentLevel.OnComplited += StopGame;
             _currentLevel.OnItemFind += OnItemFind;
         }
 
+        
         private void OnItemFind(string id)
         {
             _gamePanel.OnItemFind(id);
         }
 
+        
         public void StopGame()
         {
             _currentLevel.OnComplited -= StopGame;
@@ -100,6 +111,7 @@ namespace HOG
             OnWin?.Invoke();
         }
 
+        
         public void StartNextGame()
         {
             CreateLevel();

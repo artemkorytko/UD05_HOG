@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using DG.Tweening;
+﻿using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+
 
 
 namespace HOG
@@ -17,13 +15,9 @@ namespace HOG
         private Dictionary<string, UiItem> _uiItems = new Dictionary<string, UiItem>();
         private GameManager _gameManager;
 
-        private void Awake()
+        public void Initialize()
         {
             _gameManager = FindObjectOfType<GameManager>();
-        }
-
-        private void Start()
-        {
             _gameManager.OnNextLevelIndex += OnNextLevelIndex;
             _numberText.text = $"Level: {_gameManager.LevelIndex}";
         }
@@ -57,6 +51,5 @@ namespace HOG
                 _uiItems[id].Decrease();
             }
         }
-        
     }
 }

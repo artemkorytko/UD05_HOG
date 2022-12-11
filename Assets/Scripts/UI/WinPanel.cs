@@ -1,6 +1,4 @@
 ﻿using System;
-using DG.Tweening;
-using UnityEngine;
 
 namespace HOG
 {
@@ -8,6 +6,7 @@ namespace HOG
     {
         public event Action NextLevl;
 
+        
         protected override void OnButtonClick()
         {
             NextLevl?.Invoke();

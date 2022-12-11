@@ -1,5 +1,4 @@
 ﻿using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace HOG
@@ -14,36 +13,46 @@ namespace HOG
             Win
         }
         
-        private GamePanel _gamePanel;
         private MenuPanel _menuPanel;
         private WinPanel _winPanel;
         private AudioManager _audioManager;
-        
         private GameManager _gameManager;
+        private GamePanel _gamePanel;
+        private AnimationButton _animationButton;
+        private AnimationButton _menuAnimationButton;
         
         public event Action CreateLevel;
 
         private void Awake() 
         {
-            _gamePanel = GetComponentInChildren<GamePanel>();
             _menuPanel = GetComponentInChildren<MenuPanel>();
             _winPanel = GetComponentInChildren<WinPanel>();
-
+            _gamePanel = GetComponentInChildren<GamePanel>();
+            
+            _animationButton = GetComponentInChildren<WinPanel>().GetComponentInChildren<AnimationButton>();
+            _menuAnimationButton = GetComponentInChildren<MenuPanel>().GetComponentInChildren<AnimationButton>();
+            
             _audioManager = FindObjectOfType<AudioManager>();
             _gameManager = FindObjectOfType<GameManager>();
+            
         }
-
-        private void Start()
-        {
-            SwitchPanel(PanelType.Menu);
-        }
-
+        
+        
         private void OnEnable()
         {
             _menuPanel.Play += OnGameStart;
             _winPanel.NextLevl += OnNextLevel;
             _gameManager.OnWin += OnWin;
         }
+
+        
+        private void Start()
+        {
+            _menuAnimationButton.ActiveAnimationButton();
+            
+            SwitchPanel(PanelType.Menu);
+        }
+        
         
         private void OnDisable()
         {
@@ -52,23 +61,31 @@ namespace HOG
             _gameManager.OnWin -= OnWin;
         }
         
+        
         private void OnWin()
         {
+            _animationButton.ActiveAnimationButton();
+
             SwitchPanel(PanelType.Win);
             _audioManager.PlayAudioWin();
         }
 
+        
         private void OnNextLevel()
         {
             CreateLevel?.Invoke();
             SwitchPanel(PanelType.Game);
         }
 
+        
         private void OnGameStart()
         {
+            _gamePanel.Initialize();
+            
             CreateLevel?.Invoke();
             SwitchPanel(PanelType.None);
         }
+        
         
         private void SwitchPanel(PanelType panelType)
         {

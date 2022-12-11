@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HOG
 {
@@ -9,11 +8,13 @@ namespace HOG
         
         private AudioSource _audioSource;
 
+        
         private void Awake()
         {
             _audioSource = GetComponent<AudioSource>();
         }
 
+        
         public void PlayAudioWin()
         {
             _audioSource.PlayOneShot(_winClip);

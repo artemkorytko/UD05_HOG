@@ -11,17 +11,20 @@ namespace HOG
 
         private int _count;
         
+        
         public void SetSprite(Sprite sprite)
         {
             _image.sprite = sprite;
         }
 
+        
         public void SetCounter(int index)
         {
             _count = index;
             _counterText.text = index.ToString();
         }
 
+        
         public void Decrease()
         {
             

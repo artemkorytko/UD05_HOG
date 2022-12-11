@@ -25,6 +25,7 @@ namespace HOG
             }
         }
 
+        
         private void OnFindItem(string id)
         {
             if (--_itemsCount > 0)
@@ -38,6 +39,7 @@ namespace HOG
             }
         }
 
+        
         public Dictionary<string, GameItemData> GetItemDictionary()
         {
             Dictionary<string, GameItemData> itemsData = new Dictionary<string, GameItemData>();

@@ -1,6 +1,4 @@
 ﻿using System;
-using DG.Tweening;
-using UnityEngine;
 
 namespace HOG
 {
@@ -12,7 +10,5 @@ namespace HOG
         {
             Play?.Invoke();
         }
-        
     }
-    
 }
