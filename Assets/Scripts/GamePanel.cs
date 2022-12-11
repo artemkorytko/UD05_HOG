@@ -25,27 +25,13 @@ public class GamePanel : MonoBehaviour
 
     private UiItem _uiItem;
 
-    private void Awake()
+    public void Initialise()
     {
         _levelNumber = GetComponentInChildren<TextMeshProUGUI>();//на GamePanel висит скрипт, у GamePanel есть дети.получаем компонент который явл-ся ребенком объекта GamePanel, получаем комопнент - 
-        
-        
-    }
-
-    private void Start()
-    {
         _gameManager._LevelIndexAfterWining += OnLevelIndexAfterWining; //подписка на OnLevelIndexAfterWining   
         _levelNumber.text = $"Level {_gameManager._currentLevelIndex}";//я в компонент текста объекта типа текст меш про _levelNumber присваиваю запись "Level" получили с _gameManager  о состоянии текущего уровня;
-        // _levelNumber.text = "Level " + _gameManager.LevelIndex; /*обращаемся к свойству text объекта _levelNumber(т к он типа текстмешпроугуи, у данного класса есть прописанные св-ва(напр, цвет шрифтаб размер, и др свойства) в нашем случве обратились к свойству текст объекта из данного класса) , т е ссылка к полю text объекта _levelNUmber
-        // и присваиваем ему LevelIndex(номер уровня) из переменной _gameManager класса _gameManager*/
-
     }
 
-    private void OnEnable() //метод который вызывается когда объект становится активным
-    {
-       // _gameManager._LevelIndexAfterWining += OnLevelIndexAfterWining; //подписка на OnLevelIndexAfterWining   
-    }
-    
 
     private void OnDestroy()
     {

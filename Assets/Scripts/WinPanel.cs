@@ -1,10 +1,11 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 
 public class WinPanel : MonoBehaviour
 { 
-    // [SerializeField] private Button _newButton;
+    [SerializeField] private AudioManager _audioManager;
     [SerializeField] private CanvasGroup _Canvas;
 
     public event Action _win; //Action - как рация, подписываемся на обновления какого-либо события 
@@ -26,7 +27,8 @@ public class WinPanel : MonoBehaviour
         //*/
         
        // _sequence.Kill();//то есть при запуске метода play, _sequence перестанет работат(=> перестает работать анимации кнопки, при начале работы уровня), то есть убиваем все что связанол с секвенцией
-        _win?.Invoke();//оповещение о действии (нажатии кнопки (NextLevel после окончания игры)_win - переменная метода Action)((т к весь метод Play(прописываемый здесь) отработает при нажатии на кнопку =>_play?.Invoke() - оповещение о нажатии на кнопку)
+       _audioManager.Sound(); 
+       _win?.Invoke();//оповещение о действии (нажатии кнопки (NextLevel после окончания игры)_win - переменная метода Action)((т к весь метод Play(прописываемый здесь) отработает при нажатии на кнопку =>_play?.Invoke() - оповещение о нажатии на кнопку)
         
     }
 

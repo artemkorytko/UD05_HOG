@@ -18,6 +18,7 @@ namespace HOG
         public event Action _allLevelsDone;
         public event Action<int> _LevelIndexAfterWining; //передадим число(номер текущего уровня который мы прошли) в качестве события
 
+        public event Action _WhenWin;
         public int LevelIndex
         {
             get => _currentLevelIndex;
@@ -27,10 +28,11 @@ namespace HOG
                 _LevelIndexAfterWining?.Invoke( LevelIndex); //подписка
             }
         }
+        
 
         private void Awake()
         {
-            Debug.Log(LevelIndex);
+           // Debug.Log(LevelIndex);//при вызове эвэйка Level index = 0 т к эта переменная только объявленная и по умолчанию ей присвоен 0 при объявлении, а другое значение туда еще не помещалось
             _uiController = FindObjectOfType<UIcontroller>();
             _gamePanel = _uiController.GetComponentInChildren<GamePanel>(true);
         }
@@ -97,12 +99,14 @@ namespace HOG
 
         public void StopGame()
            {
-               _allLevelsDone?.Invoke(); //соыбтие о том что уровень пройдем и которое будет вызывать панель победы
+               
+              // _allLevelsDone?.Invoke(); //соыбтие о том что уровень пройдем и которое будет вызывать панель победы
                Debug.Log("Stop game");
                _currentLevel.OnCompleted -= StopGame;
                _currentLevel.OnItemFind -= OnItemFind;
                LevelIndex++;
                SaveData();
+               _WhenWin?.Invoke();//соыбтие о том что уровень пройдем и которое будет вызывать панель побед
                
                //Debug.Log(_currentLevelIndex);
                
