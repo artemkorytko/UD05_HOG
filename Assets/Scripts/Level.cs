@@ -24,7 +24,6 @@ namespace HOG
                 _gameItems[i].OnFind += OnFindItem;
             }
         }
-
         
         private void OnFindItem(string id)
         {
@@ -38,7 +37,6 @@ namespace HOG
                 OnComplited?.Invoke();
             }
         }
-
         
         public Dictionary<string, GameItemData> GetItemDictionary()
         {

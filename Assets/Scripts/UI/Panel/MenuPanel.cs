@@ -2,7 +2,7 @@
 
 namespace HOG
 {
-    public class MenuPanel : BaseUiPanelWithButton
+    public class MenuPanel : BasePanelWithButton
     {
         public event Action Play;
 

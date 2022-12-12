@@ -2,10 +2,9 @@
 
 namespace HOG
 {
-    public class WinPanel : BaseUiPanelWithButton
+    public class WinPanel : BasePanelWithButton
     {
         public event Action NextLevl;
-
         
         protected override void OnButtonClick()
         {

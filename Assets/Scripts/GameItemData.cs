@@ -18,13 +18,11 @@ namespace HOG
             _amount = 1;
         }
 
-        
         public void IncreaseAmount()
         {
             _amount++;
         }
 
-        
         public void DeacreaseAmount()
         {
             _amount--;

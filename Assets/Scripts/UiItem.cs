@@ -16,14 +16,12 @@ namespace HOG
         {
             _image.sprite = sprite;
         }
-
         
         public void SetCounter(int index)
         {
             _count = index;
             _counterText.text = index.ToString();
         }
-
         
         public void Decrease()
         {

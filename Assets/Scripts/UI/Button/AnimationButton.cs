@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace HOG
 {
@@ -10,36 +9,23 @@ namespace HOG
         [SerializeField] private Vector3 _maxScaleButton;
         [SerializeField] private float _durationAnimationButton;
         
-        private Button _button;
         private Sequence _sequence;
         
-        
-        private void Awake()
-        {
-            _button = GetComponent<Button>();
-        }
-        
-        
-        public void ActiveAnimationButton()
+        private void OnEnable()
         {
             _sequence = DOTween.Sequence();
-            
             StartAnimation();
-            _button.onClick.AddListener(OnStopAnimation);
         }
- 
         
-        private void OnStopAnimation()
+        private void OnDisable()
         {
             _sequence?.Kill(true);
-            _button.onClick.RemoveListener(OnStopAnimation);
         }
-         
         
         private void StartAnimation()
         {
-            _sequence.Append(transform.DOScale(_maxScaleButton, _durationAnimationButton));
-            _sequence.Append(transform.DOScale(Vector3.one, _durationAnimationButton));
+            _sequence.Append(transform.DOScale(_maxScaleButton, _durationAnimationButton)).SetEase(Ease.Linear);
+            _sequence.Append(transform.DOScale(Vector3.one, _durationAnimationButton)).SetEase(Ease.Linear);
             _sequence.SetLoops(-1);
         }
         

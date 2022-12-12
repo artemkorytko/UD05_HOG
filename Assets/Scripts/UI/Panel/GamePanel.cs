@@ -2,11 +2,9 @@
 using TMPro;
 using UnityEngine;
 
-
-
 namespace HOG
 {
-    public class GamePanel : MonoBehaviour
+    public class GamePanel : PanelWithCanvasGroup
     {
         [SerializeField] private Transform _content;
         [SerializeField] private UiItem _prefab;
@@ -15,11 +13,11 @@ namespace HOG
         private Dictionary<string, UiItem> _uiItems = new Dictionary<string, UiItem>();
         private GameManager _gameManager;
 
-        public void Initialize()
+        private void Awake()
         {
             _gameManager = FindObjectOfType<GameManager>();
             _gameManager.OnNextLevelIndex += OnNextLevelIndex;
-            _numberText.text = $"Level: {_gameManager.LevelIndex}";
+            GetComponentCanvasGroup();
         }
 
         private void OnDestroy()
