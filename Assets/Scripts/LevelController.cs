@@ -13,19 +13,6 @@ namespace HOG
 
         public event Action OnCompleted;
         public event Action<string> OnItemFind;
-        
-
-        private void OnFindItem(string id)
-        {
-            if (--_itemsCount > 0)
-            {
-                OnItemFind?.Invoke(id);
-            }
-            else
-            {
-                OnCompleted?.Invoke();
-            }
-        }
 
         public void Initialize()
         {
@@ -37,6 +24,39 @@ namespace HOG
                 _gameItems[i].Initialize();
                 _gameItems[i].OnFind += OnFindItem;
             }
+        }
+        
+        private void OnFindItem(string id)
+        {
+            if (--_itemsCount > 0)
+            {
+                OnItemFind?.Invoke(id);
+            }
+            else
+            {
+                OnItemFind?.Invoke(id);
+                OnCompleted?.Invoke();
+            }
+        }
+
+        public Dictionary<string, GameItemData> GetItemDictionary()
+        {
+            Dictionary<string, GameItemData> itemsData = new Dictionary<string, GameItemData>();
+            
+        
+        foreach (GameItem item in _gameItems)
+        {
+            string id = item.ID;
+            if (itemsData.ContainsKey(id))
+            {
+                itemsData[id].IncreaseAmount();
+            }
+            else
+            {
+                itemsData.Add(id, new GameItemData(item.Sprite));
+            }
+        }
+            return itemsData;
         }
     }
 }

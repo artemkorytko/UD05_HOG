@@ -5,22 +5,58 @@ namespace HOG
 {
     public class GameManager : MonoBehaviour
     {
-        private const string SAVE_KEY = "level_index";
-        
+         private const string SAVE_KEY = "level_index";
+
         [SerializeField] private LevelController[] allLevels;
 
-        private LevelController _CurrentLevel;
+        private LevelController _currentLevel;
         private int _currentLevelIndex;
+        private UIController _uiController;
 
-        public int levelIndex => _currentLevelIndex + 1;
+        private GamePanel _gamePanel;
+
+        private int LevelIndex
+        {
+            get => _currentLevelIndex;
+            set
+            {
+                _currentLevelIndex = value;
+                OnLevelChanged?.Invoke(LevelIndex + 1);
+            }
+        }
+
+        public event Action<int> OnLevelChanged;
+        public event Action OnWin;
+
+        private void Awake()
+        {
+            _uiController = FindObjectOfType<UIController>();
+            _gamePanel = _uiController.GetComponentInChildren<GamePanel>();
+        }
 
         private void Start()
         {
-            CreateLevel();
-            CreateLevel();
-            StartGame();
+            LoadData();
+            SubscribeUI();
         }
-        
+
+        private void SubscribeUI()
+        {
+            _uiController.OnMenuButtonEvent += StartNextGame;
+            _uiController.OnNextLevelButtonEvent += StartNextGame;
+        }
+
+        private void OnDestroy()
+        {
+            UnSubscribeUI();
+        }
+
+        private void UnSubscribeUI()
+        {
+            _uiController.OnMenuButtonEvent -= StartNextGame;
+            _uiController.OnNextLevelButtonEvent -= StartNextGame;
+        }
+
         private void SaveData()
         {
             PlayerPrefs.SetInt(SAVE_KEY, _currentLevelIndex);
@@ -28,47 +64,54 @@ namespace HOG
 
         private void LoadData()
         {
-            _currentLevelIndex = PlayerPrefs.GetInt(SAVE_KEY, 0);
+            LevelIndex = PlayerPrefs.GetInt(SAVE_KEY, 0);
         }
 
         private void CreateLevel()
         {
-            _CurrentLevel = InstatiatedLevel(0);
-            _CurrentLevel.Initialize();
+            _currentLevel = InstantiateLevel(_currentLevelIndex);
+            _currentLevel.Initialize();
+            _gamePanel.GenerateList(_currentLevel.GetItemDictionary());
         }
 
-        private LevelController InstatiatedLevel(int index)
+        private LevelController InstantiateLevel(int index)
         {
-            if (_CurrentLevel!= null)
+            if (_currentLevel != null)
             {
-                Destroy(_CurrentLevel.gameObject);
+                Destroy(_currentLevel.gameObject);
             }
 
             if (index >= allLevels.Length)
             {
                 index = index % allLevels.Length;
             }
-            
-            LevelController level =Instantiate(allLevels[index], transform);
+
+            LevelController level = Instantiate(allLevels[index]);
             return level;
         }
 
-        public void StartGame()
+        private void StartGame()
         {
-            _CurrentLevel.OnCompleted += StopGame;
+            _currentLevel.OnCompleted += StopGame;
+            _currentLevel.OnItemFind += OnItemFind;
         }
 
         private void StopGame()
         {
-            _CurrentLevel.OnCompleted -= StopGame;
-            _currentLevelIndex++;
+            _currentLevel.OnCompleted -= StopGame;
+            _currentLevel.OnItemFind -= OnItemFind;
+            LevelIndex++;
             SaveData();
-            StartNextGame();
+            OnWin?.Invoke();
+        }
+
+        private void OnItemFind(string id)
+        {
+            _gamePanel.OnItemFind(id);
         }
 
         public void StartNextGame()
         {
-            Debug.Log("Start next level");
             CreateLevel();
             StartGame();
         }
